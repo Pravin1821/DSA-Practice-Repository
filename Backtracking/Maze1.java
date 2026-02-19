@@ -3,19 +3,25 @@ public class Maze1{
 	public static void main(String [] args)
 	{
 		Scanner scan = new Scanner(System.in);
-		int[][] maze = {
+		/*int[][] maze = {
 			{0,1,1,0},
 			{0,0,1,0},
 		    {1,0,0,1},
 			{0,1,0,0}
-		};
+		};*/
+		int[][] maze = {
+			{0,0,0},
+				{0,1,0},
+		{0,0,0}};
 		int[][] res = new int[maze.length][maze[0].length];
-		FindPath(maze,res,0,0);
+		//FindPath(maze,res,0,0);
+		if(findSinglePath(maze,res,0,0)){
 		for(int i=0;i<maze.length;i++)
 		{
 			for(int j=0;j<maze[0].length;j++)
 				System.out.print(res[i][j]+" ");
 			System.out.println();
+		}
 		}
 	}
 	public static void FindPath(int[][] maze,int[][] res, int r, int c)
@@ -39,6 +45,23 @@ public class Maze1{
 			FindPath(maze,res,r,c+1);
 			//return;
 		}
+	}
+	public static boolean findSinglePath(int[][] maze, int[][] res, int r, int c)
+	{
+		if(r>=maze.length || c>=maze[0].length || maze[r][c]==1)
+			return false;
+		if(r==maze.length-1 && c==maze[0].length-1)
+		{
+			res[r][c]=1;
+			return true;
+		}
+		res[r][c] = 1;
+		if(findSinglePath(maze,res,r+1,c))
+			return true;
+		if(findSinglePath(maze,res,r,c+1))
+			return true;
+		res[r][c] = 0;
+		return false;
 	}
 }
 		
