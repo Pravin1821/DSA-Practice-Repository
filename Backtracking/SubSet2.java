@@ -4,7 +4,7 @@ public class SubSet2{
 	{
 		Scanner scan = new Scanner(System.in);
 		int[] n={1,2,2};
-		System.out.print(subsetsWithDup(n));
+		System.out.print(subsetsWithDup(n)); 
 	}
 	public static List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> list = new ArrayList<>();
