@@ -1,0 +1,70 @@
+-- Create a table Students with fields: id, name, age, grade.
+create table students(
+	id int primary key,
+    name varchar(20),
+    age int,
+    grade varchar(1)
+);
+
+-- Insert 5 student records into the table.
+insert into students (id, name, age, grade) values (1, "Pravin", 19, "A"), (2, "Prathosh", 20, "B"), (3, "PK", 20, "O"), 
+												(4, "Ragul", 18, "C"), (5, "Prabu", 19, "A");
+												
+-- Write a query to display all students.
+select * from students;
+
+-- Retrievestudents who are greater than 18 years old.
+select * from students where age > 18;
+
+-- Insert a new student with all fields.
+insert into students (id ,name, age, grade) values (6, "Abi" , 15, "D");
+
+-- Show students whose names start with ‘A’.
+select * from students where name like 'A%';
+
+-- List students sorted by age descending and ascending.
+select * from students order by age desc;
+select * from students order by age asc;
+
+-- Find students whose age is between 16 and 20.
+select * from students where age >= 16 and age <=20;
+select * from students where age between 16 and 20;
+
+-- Retrieve students in grades ‘A’, ‘B’, or ‘C’.
+select * from students where grade in ("A","B","C");
+
+-- Show students whose name is not NULL & NULL.
+select * from students where name is not null;
+select * from students where name is null;
+
+-- Count total number of students.
+select count(*) from students;
+
+-- Find average age of students.
+select avg(age) as avg_age from students;
+
+-- Show number of students in each grade.
+select grade, count(*) as grade_count from students group by grade;
+
+-- List grades with more than 2 students.
+select grade, count(*) as stud_count from students group by grade having count(*) > 2;
+
+-- Find students whose age is greater than the average age.
+select * from students where age > (select avg(age) from students);
+
+-- Retrieve students with the highest age.
+select * from students where age = (select max(age) from students);
+
+-- Update grade to ‘A’ for students whose name is ‘Ragul’.
+SET SQL_SAFE_UPDATES = 0;
+update students set grade = "A" where name = "Ragul";
+SET SQL_SAFE_UPDATES = 1;
+
+-- Retrieve names of students who are 18 years old.
+select name from students where age = 18;
+
+-- Retrieve student with 2nd maximum age.
+select * from students where age = (select max(age) from students where age < (select max(age) from students)) limit 1;
+
+-- Retrieve students ordered by grade ascending and age descending.
+select * from students order by grade asc, age desc ;

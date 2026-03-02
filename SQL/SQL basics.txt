@@ -1,0 +1,71 @@
+-- To create Table;
+create table Employee(
+  emp_id int primary key,
+  emp_name varchar(20),
+  dept varchar(40),
+  salary int
+);
+
+-- To insert values into table
+insert into Employee (emp_id,emp_name,dept,salary) values (1,"Pravin","IT",25000), (2,"Ragul","CSE",20000), (3,"Prabu","IT",25000), (5,"User1","IT",55000), (10,"Prathosh","IT",50000);
+START TRANSACTION;
+
+-- update table values;
+update Employee set salary = salary * 1.10 where emp_id > 0;
+update Employee set dept = "HR" where emp_id = 10;
+
+-- Display query;
+select * from Employee;
+
+-- Rollback to previous state - like before updation - we need specify where the transaction is started
+rollback;
+select * from Employee;
+
+-- Get top 3 heighest paid employee
+select * from employee order by salary desc limit 3;
+
+-- Reterive the 2nd heighest salary from employee table
+select * from employee where salary = ( select max(salary) from employee where salary < (select max(salary) from employee));
+
+-- Find the duplicates records in the table
+insert into Employee (emp_id,emp_name,dept,salary) values (6,"Pravin","IT",25000);
+select emp_name, count(*) from employee group by emp_name having count(*) > 1;
+
+-- Reterive all the employee who joined in 2023
+alter table employee add join_year int;
+set sql_safe_updates = 0;
+update employee set join_year = 2023 where dept = "IT";
+update employee set join_year = 2025 where dept =  "CSE";
+select * from employee where join_year = 2023;
+set sql_safe_updates = 1;
+
+-- Giving grant permision to user1
+create user 'User1'@'localhost' identified by '1234';
+grant select, insert on sql_learning.employee to 'User1'@'localhost';
+
+-- Revoke the permision
+revoke insert on sql_learning.employee from 'User1'@'localhost';
+
+-- Its help to show any changes made by user1 and what are all the permission we given access to the specific user
+show grants for 'User1'@'localhost';
+
+-- Delete the particular row - mentioning where - to specify with field and also with out where its delete whole , in delete we able to rollback
+delete from employee where emp_id = 3;
+select * from employee;
+
+-- Truncate is used to delete the whole fields in particular table but the table exixts - but not abe to rollback
+truncate table employee;
+rollback;
+select * from employee;
+
+-- Using alter we can able to add rows/records in the table
+alter table employee add column email varchar(25);
+alter table employee add  address varchar(250), add phone_num int;
+select * from employee;
+
+-- Drop hepls to delete whole table and also rollback is not possible
+drop table employee;
+
+-- Find grades where average age is greater than 18.
+select grade from students where age > 18;
+
