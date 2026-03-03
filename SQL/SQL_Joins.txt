@@ -1,0 +1,74 @@
+-- Employee Table
+create table employee(
+	   emp_id int primary key,
+    emp_name varchar(20),
+    dept_id int
+);
+insert into employee (emp_id, emp_name, dept_id) values (1, "Pravin", 101), (2, "Prathosh", 102), (3, "Prabu", 101), (4, "Ragul", 103),
+														(5, "Naveen", null);
+-- Department Table
+create table department(
+	dept_id int primary key,
+    dept_name varchar(30)
+);
+insert into department (dept_id, dept_name) values (101, "IT"), (102, "CSE"), (103, "HR"), (104, "Sales");
+
+-- Project Table
+create table project(
+	proj_id int primary key,
+    proj_name varchar(30),
+    emp_id int
+);
+insert into project (proj_id, proj_name, emp_id) values (1001, "Project A", 1), (1002, "Project B", 2), (1003, "Project C", 4), (1004, "Project D", null);
+
+select * from employee;
+select * from project;
+select * from department;
+
+-- List all employees along with their department names.
+select e.emp_id, e.emp_name, e.dept_id, d.dept_name
+from employee e join department d on e.dept_id = d.dept_id;
+
+-- List all employees who are assigned to a project, including project names.
+select e.emp_id, e.emp_name, e.dept_id, p.proj_name
+from employee e join project p on e.emp_id = p.emp_id;
+
+-- List all employees and their department names (include employees who are not assigned to any department).
+select e.emp_id, e.emp_name, e.dept_id, d.dept_name
+from employee e left join department d on e.dept_id = d.dept_id;
+
+-- List all employees and their project names (include employees who don’t have projects).
+select e.emp_id, e.emp_name, e.dept_id, p.proj_name
+from employee e left join project p on e.emp_id = p.emp_id;
+
+-- List all departments and the employees working in them (include departments with no employees).
+select e.emp_id, e.emp_name, e.dept_id, d.dept_name
+from employee e right join department d on e.dept_id = d.dept_id;
+
+-- List all employees and projects, including employees without projects and projects without employees. (Full outer join cannot directly used by mysql)
+select e.emp_id, e.emp_name, p.proj_name
+from employee e left join project p on e.emp_id = p.emp_id
+union
+select e.emp_id, e.emp_name, p.proj_name
+from employee e right join project p on e.emp_id = p.emp_id;
+
+-- List all departments and employees, including unmatched departments and employees without departments.
+select e.emp_id, e.emp_name, e.dept_id, d.dept_name
+from employee e left join department d on e.dept_id = d.dept_id
+union
+select e.emp_id, e.emp_name, e.dept_id, d.dept_name
+from employee e right join department d on e.dept_id = d.dept_id;
+
+-- List employees, their department, and project name (if assigned).
+select e.emp_id, e.emp_name, d.dept_name, p.proj_name
+from employee e join department d on e.dept_id = d.dept_id
+join project p on e.emp_id = p.emp_id; 
+
+-- Find employees who are not assigned to any project.
+select e.emp_id, e.emp_name, p.proj_name
+from employee e left join project p on e.emp_id = p.emp_id
+where p.emp_id is NULL;
+
+-- Find all departments and the number of employees assigned to them.
+select d.dept_id, d.dept_name, count(e.emp_id) as emp_count
+from department d join employee e on d.dept_id = e.dept_id group by d.dept_id, d.dept_name; 
