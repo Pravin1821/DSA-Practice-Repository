@@ -2,7 +2,7 @@ import java.util.*;
 public class InsertInterval{
 	public static int[][] insert(int[][] it,int[] newit)
 	{
-		List<int[]> list = new ArrayList<>(); 
+	   List<int[]> list = new ArrayList<>(); 
        int i=0,n=it.length;
        while(i<n && it[i][1]<newit[0])
             list.add(it[i++]);
