@@ -21,7 +21,6 @@ public class Graph {
             this.weig = weig;
         }
 
-        @Override
         public int compareTo(Edge temp) {
             return this.weig - temp.weig;
         }
